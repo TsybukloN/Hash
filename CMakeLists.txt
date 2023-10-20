@@ -4,4 +4,4 @@ project("Hash")
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(Hash "main.cpp" "hashSet.h")
+add_executable(Hash main.cpp hashSet.h hashMap.h)

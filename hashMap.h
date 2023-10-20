@@ -2,16 +2,16 @@
 // Created by Nikita on 20.10.2023.
 //
 
-#ifndef HASH_HASHSET_H
-#define HASH_HASHSET_H
+#ifndef HASH_HASHMAP_H
+#define HASH_HASHMAP_H
 
 #include <vector>
 #include <string>
 
-template <class Type>
-class hashSet{
+template <class KayT, class DataT>
+class hashMap{
 public:
-    explicit hashSet(int size_user) {
+    explicit hashMap(int size_user) {
         size = size_user;
         set.resize(size);
 
@@ -20,24 +20,25 @@ public:
         }
     }
 
-    void insert(Type val) {
-        Node*& actual = set[hashFunction(val)];
+    void insert(KayT key, DataT val) {
+        Node*& actual = set[hashFunction(key)];
 
         while(actual != nullptr){
-            if(actual->data == val) return;
+            if(actual->key == key) {
+                return;
+            }
             actual = actual->neighbour;
-            std::cout << "C"<< std::endl;
         }
 
-        actual = new Node(val);
+        actual = new Node(key, val);
     }
 
-    bool search(Type val) {
-        Node* actual = set[hashFunction(val)];
+    DataT search(KayT key) {
+        Node* actual = set[hashFunction(key)];
 
         while(actual != nullptr) {
-            if(actual->data == val) {
-                return true;
+            if(actual->key == key) {
+                return actual->data;
             }
             actual = actual->neighbour;
         }
@@ -48,10 +49,12 @@ public:
 private:
 
     struct Node {
-        Type data;
+        KayT key;
+        DataT data;
         Node* neighbour;
 
-        explicit Node(Type val) {
+        explicit Node(KayT key, DataT val) {
+            this->key = key;
             data = val;
             neighbour = nullptr;
         }
@@ -78,4 +81,4 @@ private:
     }
 };
 
-#endif //HASH_HASHSET_H
+#endif //HASH_HASHMAP_H

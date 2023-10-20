@@ -1,19 +1,15 @@
 #include <iostream>
-#include "hashSet.h"
+#include "hashMap.h"
 
 using namespace std;
 
 int main() {
-    hashSet hs(10);
+    hashMap<string, int> hm(4);
 
-    srand(time(0));
+    hm.insert("Hello", 1);
+    hm.insert("world", 2);
 
-    for(int i = 0;i < 10;i++) {
-        int tmp = rand() % 1000;
-        cout << tmp << endl;
-        hs.insert(tmp);
-        cout << hs.search(tmp) << endl;
-    }
+    cout << hm.search("Hello");
 
     return 0;
 }
