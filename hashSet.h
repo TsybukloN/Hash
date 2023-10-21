@@ -21,15 +21,7 @@ public:
     }
 
     void insert(Type val) {
-        Node*& actual = set[hashFunction(val)];
-
-        while(actual != nullptr){
-            if(actual->data == val) return;
-            actual = actual->neighbour;
-            std::cout << "C"<< std::endl;
-        }
-
-        actual = new Node(val);
+        insertioinToNull(set[hashFunction(val)], val);
     }
 
     bool search(Type val) {
@@ -75,6 +67,14 @@ private:
             hash = hash * 7 + ch;
         }
         return hash % size;
+    }
+
+    Node* insertioinToNull(Node*& actual, Type val) {
+        if (actual == nullptr) {
+            actual = new Node(val);
+            return actual;
+        }
+        return insertioinToNull(actual->neighbour, val);
     }
 };
 

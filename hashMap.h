@@ -21,16 +21,7 @@ public:
     }
 
     void insert(KayT key, DataT val) {
-        Node*& actual = set[hashFunction(key)];
-
-        while(actual != nullptr){
-            if(actual->key == key) {
-                return;
-            }
-            actual = actual->neighbour;
-        }
-
-        actual = new Node(key, val);
+        insertioinToNull(set[hashFunction(key)], key, val);
     }
 
     DataT search(KayT key) {
@@ -43,7 +34,7 @@ public:
             actual = actual->neighbour;
         }
 
-        return false;
+        return INT_MIN;
     }
 
 private:
@@ -78,6 +69,14 @@ private:
             hash = hash * 7 + ch;
         }
         return hash % size;
+    }
+
+    Node* insertioinToNull(Node*& actual, KayT key, DataT val) {
+        if (actual == nullptr) {
+            actual = new Node(key, val);
+            return actual;
+        }
+        return insertioinToNull(actual->neighbour, key, val);
     }
 };
 
