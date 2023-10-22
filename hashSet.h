@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include <stdexcept>
 
 template <class Type>
 class hashSet{
@@ -21,7 +22,7 @@ public:
     }
 
     void insert(Type val) {
-        insertioinToNull(set[hashFunction(val)], val);
+        insertionToNull(set[hashFunction(val)], val);
     }
 
     bool search(Type val) {
@@ -35,6 +36,10 @@ public:
         }
 
         return false;
+    }
+
+    bool operator[](Type val) {
+        return this->search(val);
     }
 
 private:
@@ -69,13 +74,85 @@ private:
         return hash % size;
     }
 
-    Node* insertioinToNull(Node*& actual, Type val) {
+    Node* insertionToNull(Node*& actual, Type val) {
+
         if (actual == nullptr) {
             actual = new Node(val);
             return actual;
         }
-        return insertioinToNull(actual->neighbour, val);
+
+        if (actual->data == val) {
+            return actual;
+        }
+
+        return insertionToNull(actual->neighbour, val);
     }
 };
+
+void Test_hashSet() {
+    int iteration = 0;
+
+    // Testcase 1
+    {
+        std::string error_dis =  "Test " + std::to_string(++iteration) + " failed for int in hashSet: ";
+        hashSet<int> hs(4);
+
+        hs.insert(1);
+        hs.insert(12);
+        hs.insert(42);
+        hs.insert(1);
+
+        if(hs.search(1) != true) {
+            throw std::runtime_error(error_dis + "1 is attend");
+        }
+    }
+
+    // Testcase 2
+     {
+        std::string error_dis =  "Test " + std::to_string(++iteration) + " failed for int in hashSet: ";
+        hashSet<std::string> hs(10);
+
+        hs.insert("12");
+        hs.insert("Hello");
+        hs.insert("VE");
+        hs.insert("Bubble");
+
+        if(hs["12"] != true) {
+            throw std::runtime_error(error_dis + "\"12\" is attend");
+        }
+    }
+
+    // Testcase 3
+    {
+        std::string error_dis =  "Test " + std::to_string(++iteration) + " failed for int in hashSet: ";
+        hashSet<long double> hs(10);
+
+        hs.insert(3.141592);
+        hs.insert(2.7);
+        hs.insert(1.61234567890);
+        hs.insert(0);
+
+        if(hs.search(0) != true) {
+            throw std::runtime_error(error_dis + "0 is attend");
+        }
+
+        if(hs[1.61234567890]  != true) {
+            throw std::runtime_error(error_dis + "1.61234567890 is attend");
+        }
+
+        if(hs[2.7]  != true) {
+            throw std::runtime_error(error_dis + "2.7 is attend");
+        }
+
+        if(hs[3.141592]  != true) {
+            throw std::runtime_error(error_dis + "3.141592 is attend");
+        }
+
+        if(hs[12]  != false) {
+            throw std::runtime_error(error_dis + "12 is not attend");
+        }
+    }
+}
+
 
 #endif //HASH_HASHSET_H
